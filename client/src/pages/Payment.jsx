@@ -1,12 +1,17 @@
-import { useLocation } from "react-router-dom";
-
-import { useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 
 import Footer from "../components/Footer";
 
 import toast from "react-hot-toast";
+
+import {
+  confirmBooking,
+} from "../services/bookingService";
 
 function Payment() {
 
@@ -22,14 +27,31 @@ function Payment() {
   const handlePayment =
     async () => {
 
-      toast.success(
-        "Payment Successful"
-      );
+      try {
 
-      navigate(
-        "/ticket",
-        { replace: true }
-      );
+        await confirmBooking(
+          booking.id
+        );
+
+        toast.success(
+          "Payment Successful"
+        );
+
+        navigate(
+          "/ticket",
+          {
+            replace: true,
+          }
+        );
+
+      } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+          "Payment Failed"
+        );
+      }
     };
 
   return (

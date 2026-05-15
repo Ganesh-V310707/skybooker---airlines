@@ -2,46 +2,97 @@ const express = require("express");
 
 const router = express.Router();
 
-const Booking = require("../models/Booking");
+const Booking =
+  require("../models/Booking");
 
-const Flight = require("../models/Flight");
+const Flight =
+  require("../models/Flight");
 
-router.get("/:flightId", async (req, res) => {
+const User =
+  require("../models/User");
 
-  try {
+router.get(
+  "/user/:userId",
 
-    const now = new Date();
+  async (req, res) => {
 
-    await Booking.destroy({
+    try {
 
-      where: {
+      const bookings =
+        await Booking.findAll({
 
-        flightId:
-          req.params.flightId,
+          where: {
+            userId:
+              req.params.userId,
+          },
 
-        paymentStatus:
-          "pending",
-      },
-    });
+          include: [
 
-    const bookings =
-      await Booking.findAll({
+            {
+              model: Flight,
+            },
+
+            {
+              model: User,
+
+              attributes: [
+                "id",
+                "name",
+                "email",
+              ],
+            },
+          ],
+        });
+
+      res.json(bookings);
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+);
+
+router.get(
+  "/:flightId",
+
+  async (req, res) => {
+
+    try {
+
+      await Booking.destroy({
 
         where: {
+
           flightId:
             req.params.flightId,
+
+          paymentStatus:
+            "pending",
         },
       });
 
-    res.json(bookings);
+      const bookings =
+        await Booking.findAll({
 
-  } catch (error) {
+          where: {
+            flightId:
+              req.params.flightId,
+          },
+        });
 
-    res.status(500).json({
-      message: error.message,
-    });
+      res.json(bookings);
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message,
+      });
+    }
   }
-});
+);
 
 router.post("/", async (req, res) => {
 
@@ -88,10 +139,10 @@ router.post("/", async (req, res) => {
         ...req.body,
 
         paymentStatus:
-          "paid",
+          "pending",
 
         bookingStatus:
-          "confirmed",
+          "locked",
 
         lockExpiresAt:
           new Date(
@@ -101,24 +152,6 @@ router.post("/", async (req, res) => {
             5 * 60 * 1000
           ),
       });
-
-    const bookedSeats =
-      await Booking.count({
-
-        where: {
-          flightId:
-            flight.id,
-        },
-      });
-
-    await flight.update({
-
-      bookedSeats,
-
-      availableSeats:
-        flight.totalSeats -
-        bookedSeats,
-    });
 
     res.status(201).json(
       booking
@@ -161,6 +194,36 @@ router.put(
         bookingStatus:
           "confirmed",
       });
+
+      const flight =
+        await Flight.findByPk(
+          booking.flightId
+        );
+
+      if (flight) {
+
+        const bookedSeats =
+          await Booking.count({
+
+            where: {
+
+              flightId:
+                flight.id,
+
+              paymentStatus:
+                "paid",
+            },
+          });
+
+        await flight.update({
+
+          bookedSeats,
+
+          availableSeats:
+            flight.totalSeats -
+            bookedSeats,
+        });
+      }
 
       res.json({
 

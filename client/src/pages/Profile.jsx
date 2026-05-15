@@ -1,4 +1,4 @@
- import {
+import {
   useEffect,
   useState,
 } from "react";
@@ -15,7 +15,10 @@ function Profile() {
 
   const user =
     JSON.parse(
-      localStorage.getItem("user")
+
+      localStorage.getItem(
+        "user"
+      )
     );
 
   const [bookings, setBookings] =
@@ -111,13 +114,39 @@ function Profile() {
                 >
 
                   <div className="mb-3 text-xl font-bold">
-                    Seat: {booking.seatNumber}
+                    Seat:
+                    {" "}
+                    {booking.seatNumber}
                   </div>
 
                   <div className="mb-2">
                     Passenger:
                     {" "}
                     {booking.passengerName}
+                  </div>
+
+                  <div className="mb-2">
+                    Airline:
+                    {" "}
+                    {booking.Flight?.airline}
+                  </div>
+
+                  <div className="mb-2">
+                    Route:
+                    {" "}
+                    {booking.Flight?.route}
+                  </div>
+
+                  <div className="mb-2">
+                    Time:
+                    {" "}
+                    {booking.Flight?.time}
+                  </div>
+
+                  <div className="mb-2">
+                    Price:
+                    {" "}
+                    {booking.Flight?.price}
                   </div>
 
                   <div className="mb-2">
