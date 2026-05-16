@@ -27,7 +27,13 @@ const authRoutes =
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin:
+      "https://skybooker-airlines-1.onrender.com",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
