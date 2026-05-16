@@ -32,6 +32,11 @@ const Flight =
       allowNull: false,
     },
 
+    departureDate: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
     departureTime: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -65,6 +70,11 @@ const Flight =
     price: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+
+    status: {
+      type: DataTypes.STRING,
+      defaultValue: "scheduled",
     },
   });
 

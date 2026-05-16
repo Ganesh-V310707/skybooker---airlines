@@ -2,7 +2,8 @@ const express = require("express");
 
 const router = express.Router();
 
-const Flight = require("../models/Flight");
+const Flight =
+  require("../models/Flight");
 
 const {
   authMiddleware,
@@ -13,7 +14,8 @@ router.get("/", async (req, res) => {
 
   try {
 
-    const flights = await Flight.findAll();
+    const flights =
+      await Flight.findAll();
 
     res.json(flights);
 
@@ -37,11 +39,14 @@ router.post(
     try {
 
       const newFlight =
-        await Flight.create(req.body);
+        await Flight.create(
+          req.body
+        );
 
       res.status(201).json({
 
-        message: "Flight Added",
+        message:
+          "Flight Added",
 
         flight: newFlight,
       });
@@ -74,7 +79,8 @@ router.delete(
       });
 
       res.json({
-        message: "Flight Deleted",
+        message:
+          "Flight Deleted",
       });
 
     } catch (error) {

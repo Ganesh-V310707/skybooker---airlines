@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
-import { motion } from "framer-motion";
-
 import toast from "react-hot-toast";
 
 import Navbar from "../components/Navbar";
@@ -33,6 +31,9 @@ function Admin() {
   const [destination, setDestination] =
     useState("");
 
+  const [departureDate, setDepartureDate] =
+    useState("");
+
   const [departureTime, setDepartureTime] =
     useState("");
 
@@ -44,6 +45,9 @@ function Admin() {
 
   const [price, setPrice] =
     useState("");
+
+  const [status, setStatus] =
+    useState("scheduled");
 
   const [totalSeats, setTotalSeats] =
     useState("");
@@ -111,6 +115,7 @@ function Admin() {
         !airline ||
         !origin ||
         !destination ||
+        !departureDate ||
         !departureTime ||
         !arrivalTime ||
         !gate ||
@@ -139,6 +144,8 @@ function Admin() {
         route:
           `${origin} → ${destination}`,
 
+        departureDate,
+
         departureTime,
 
         arrivalTime,
@@ -154,6 +161,8 @@ function Admin() {
           Number(totalSeats),
 
         price,
+
+        status,
       };
 
       try {
@@ -172,10 +181,12 @@ function Admin() {
         setAirline("");
         setOrigin("");
         setDestination("");
+        setDepartureDate("");
         setDepartureTime("");
         setArrivalTime("");
         setGate("");
         setPrice("");
+        setStatus("scheduled");
         setTotalSeats("");
 
       } catch (error) {
@@ -243,6 +254,7 @@ function Admin() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
 
           <div className="bg-white/10 p-8 rounded-3xl">
+
             <h2 className="text-xl mb-3">
               Total Flights
             </h2>
@@ -250,9 +262,11 @@ function Admin() {
             <p className="text-5xl font-bold">
               {totalFlights}
             </p>
+
           </div>
 
           <div className="bg-white/10 p-8 rounded-3xl">
+
             <h2 className="text-xl mb-3">
               Booked Seats
             </h2>
@@ -260,9 +274,11 @@ function Admin() {
             <p className="text-5xl font-bold">
               {totalBookedSeats}
             </p>
+
           </div>
 
           <div className="bg-white/10 p-8 rounded-3xl">
+
             <h2 className="text-xl mb-3">
               Available Seats
             </h2>
@@ -270,6 +286,7 @@ function Admin() {
             <p className="text-5xl font-bold">
               {totalAvailableSeats}
             </p>
+
           </div>
 
         </div>
@@ -331,6 +348,17 @@ function Admin() {
             />
 
             <input
+              type="date"
+              value={departureDate}
+              onChange={(e) =>
+                setDepartureDate(
+                  e.target.value
+                )
+              }
+              className="p-4 rounded-2xl bg-white/10"
+            />
+
+            <input
               type="text"
               placeholder="Departure Time"
               value={departureTime}
@@ -378,6 +406,34 @@ function Admin() {
               className="p-4 rounded-2xl bg-white/10"
             />
 
+            <select
+              value={status}
+              onChange={(e) =>
+                setStatus(
+                  e.target.value
+                )
+              }
+              className="p-4 rounded-2xl bg-white/10"
+            >
+
+              <option value="scheduled">
+                Scheduled
+              </option>
+
+              <option value="boarding">
+                Boarding
+              </option>
+
+              <option value="departed">
+                Departed
+              </option>
+
+              <option value="cancelled">
+                Cancelled
+              </option>
+
+            </select>
+
             <input
               type="number"
               placeholder="Total Seats"
@@ -424,6 +480,18 @@ function Admin() {
                 Route:
                 {" "}
                 {flight.route}
+              </p>
+
+              <p className="mb-2">
+                Date:
+                {" "}
+                {flight.departureDate}
+              </p>
+
+              <p className="mb-2">
+                Status:
+                {" "}
+                {flight.status}
               </p>
 
               <p className="mb-2">
