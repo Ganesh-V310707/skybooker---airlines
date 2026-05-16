@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API =
-  "https://skybooker---airlines.onrender.com/api/flights";
+  "https://skybooker---airlines.onrender.com/api/bookings";
 
 export const getBookings =
   async (flightId) => {
