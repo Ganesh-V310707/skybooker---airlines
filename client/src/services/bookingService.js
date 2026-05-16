@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API =
-  "http://localhost:5000/api/bookings";
+  "https://skybooker---airlines.onrender.com/api/flights";
 
 export const getBookings =
   async (flightId) => {
