@@ -7,12 +7,42 @@ const sequelize =
 const Flight =
   sequelize.define("Flight", {
 
+    flightNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
     airline: {
       type: DataTypes.STRING,
       allowNull: false,
     },
 
+    origin: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    destination: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
     route: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    departureTime: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    arrivalTime: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    gate: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -32,12 +62,9 @@ const Flight =
       defaultValue: 0,
     },
 
-    time: {
-      type: DataTypes.STRING,
-    },
-
     price: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
   });
 
